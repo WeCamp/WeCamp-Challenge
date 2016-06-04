@@ -6,6 +6,7 @@
         "classmap": [ "src/" ]
     },
     "require": {
-        "crodas/LanguageDetector": "^0.1.1"
+        "crodas/LanguageDetector": "^0.1.1",
+        "doctrine/orm": "^2.5"
     }
 }
