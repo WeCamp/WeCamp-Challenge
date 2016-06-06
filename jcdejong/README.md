@@ -5,6 +5,7 @@ Thanks to the WeCamp Challenge I found myself a new pet project ;)
 Usage
 =====
  - Run `php composer.phar install`
+ - Run `vendor/bin/doctrine orm:schema-tool:update --force` to initiate sqlite database
  - Run `php challenge.php` to run with the default text "My brain is a beautiful thing, and I intend to use it at WeCamp"
  - Run `php challenge.php "Your own custom input string"`
 
