@@ -12,6 +12,24 @@ If your screen is too small, do this:
 
  - Run `php challenge.php "Your own custom input string" --vertical`
  
+Depending on the wordlist used, the output for the default string might look like:
+
+    Here is the rebus to solve:
+    ----------------------------
+    |  [monkey]   |  [herring]   |  [seal]   |  [wasp]   |  [mule]   |  [starling]   |  [reindeer]   |  [viper]   |  [eland]   |  [chamois]   |  [goose]   |  [oyster]   |  [meerkat]   |  [chimpanzee]   |
+    |  monke=m    |  herr=bra    |    i+     |    -w     | m=beautif |   starl=th    |    rei=a      |    -v      |  ela=inte  |   cham=t     |   goo=u    |   oys=i     |  meerka=a    |    chi=weca     |
+    |             |     -g       |   -eal    |   -sp     |    -e     |               |     -eer      |   -per     |            |     -is      |            |    -er      |              |     -anzee      |
+
+or
+
+    Here is the rebus to solve:
+    ----------------------------
+    |  [quality]   |  [rainbow]   |  [consul]   |  [acoustics]   |  [full]   |  [pitching]   |  [handicap]   |  [comparison]   |  [attendant]   |  [uniform]   |  [weasel]   |  [chateau]   |  [worthy]   |  [campanile]   |
+    |  qualit=m    |     b+       |   con=i     |   -coustics    |  beauti+  |    pitc=t     |     ha=a      |    -compar      |     at=in      |   unif=t     |   wea=u     |    cha=i     |   wor=a     |      we+       |
+    |              |    -bow      |    -ul      |                |    -l     |               |    -icap      |      -son       |     -ant       |     -rm      |     -l      |    -eau      |    -hy      |    -anile      |
+
+As you can see, the word "pictured" is enclosed in brackets, below that word are the instructions to make the actual word.
+
 Instructions on using your own datasources and string
 =====================================================
  - Remove all files from `/data` 
@@ -32,13 +50,15 @@ You can find me at <jcdejong@allict.nl> or @jcdejong on twitter
 Disclaimer
 ==========
 Still under construction, but at this point it is already doing this:
+
  - determine input language of input string
  - based on the input language create a simple database
  - for each word create a (text)rebus
- - ouput it to the screen
+ - ouput it to the console
  
 Known bugs/issues, still on todo list:
- - if a word cannot be found in the database, result is not very nice
+
+ - if a word cannot be found in the database, instructions are basicaly to remove everything and add the word..
  - all languages are currently inserted in one big pile into the database, rebus (db) should be made language aware
  - to find the rebus, only letters from the left side of the original word are taken, right side is not yet implemented
  - code is far from clean and maintainable, but I tend to use this codebase as input for some courses and maybe a talk
