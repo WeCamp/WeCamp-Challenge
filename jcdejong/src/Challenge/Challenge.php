@@ -73,11 +73,17 @@ class Challenge
             echo 'Unknown language detected, will use English dictionary...' . PHP_EOL;
             $language = 'english';
         }
+        $languageFile = __DIR__ . '/../../samples/words/' . $language;
+
+        if (!file_exists($languageFile)) {
+            echo 'ERROR - no valid sample words file found for language ' . $language . PHP_EOL;
+            die();
+        }
 
         try {
             $counter = 0;
             echo 'Importing words into database...';
-            $file = fopen(__DIR__ . '/../../samples/words/' . $language, 'r');
+            $file = fopen($languageFile, 'r');
             while (!feof($file)) {
                 $wordRead = trim(fgets($file));
 
