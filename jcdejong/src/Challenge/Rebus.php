@@ -29,6 +29,8 @@ class Rebus
 
     /**
      * Find a word that could resample the original if you add, subtract of replace characters
+     * @todo fix case when no suitable word can be found in the database...
+     * @todo never return words already used for other word in this session
      */
     private function find()
     {
@@ -54,10 +56,14 @@ class Rebus
                 ->setParameter('word', '%' . $partToFind . '%')
                 ->setParameter('original', $this->word)
                 ->orderBy('wordLength', 'ASC')
-                ->setMaxResults(1)
+                //->setMaxResults(1)
                 ->getQuery();
             $result = $query->getResult();
-            $this->rebusWord = isset($result[0]['word']) ? $result[0]['word'] : false;
+
+            //$this->rebusWord = isset($result[0]['word']) ? $result[0]['word'] : false;
+            $randomIndex = rand(0, count($result));
+            $this->rebusWord = isset($result[$randomIndex]['word']) ? $result[$randomIndex]['word'] : false;
+
             $this->searchPart = $partToFind;
         } catch (QueryException $e) {
             echo $e->getMessage() . PHP_EOL;
@@ -66,28 +72,6 @@ class Rebus
 
         if (!$this->rebusWord) {
             $this->find();
-        }
-
-        // figure out the left and right part if search string was only 1 char long
-        // @todo since this is the same code as for the instructions, maybe combine this in one function?
-        if ($this->rebusWord != '' && $this->searchPart != '' && strlen($this->word) == 1) {
-            // first do a preg_replace of the first occurrance, so we don't fuck up words with multiple search parts :)
-            $pattern = '/'.preg_quote($this->word, '/').'/';
-            $rebusWord = preg_replace($pattern, '|', $this->rebusWord, 1);
-
-            // explode what is left, so we know what to replace/remove.
-            // $parts should always have 2 elements and will have the following result:
-            // - first empty |test
-            // - second empty test|
-            // - both containing something test|test
-            $parts = explode('|', $rebusWord);
-
-            if ($parts[0] != '') {
-                $this->leftPart = $parts[0];
-            }
-            if ($parts[1] != '') {
-                $this->rightPart = $parts[0];
-            }
         }
     }
 
@@ -119,10 +103,6 @@ class Rebus
             echo 'ERROR - could not find rebus word' . PHP_EOL;
             return [];
         }
-
-        // get word we searched on
-        $wordSearched = substr($this->word, strlen($this->leftPart), strlen($this->word)); // subtrack left part
-        $wordSearched = substr($wordSearched, strlen($this->rightPart), strlen($wordSearched));
 
         // first do a preg_replace of the first occurrance, so we don't fuck up words with multiple search parts :)
         $pattern = '/'.preg_quote($this->searchPart, '/').'/';
@@ -179,6 +159,5 @@ class Rebus
         foreach ($this->instructions as $instruction) {
             echo str_pad($instruction, strlen($this->rebusWord) + 2, ' ', STR_PAD_BOTH). PHP_EOL;
         }
-        echo str_repeat('-', strlen($this->rebusWord) + 2) . PHP_EOL;
     }
 }
