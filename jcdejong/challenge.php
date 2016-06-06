@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/app/bootstrap.php';
 
-// it could use a little bit of memory, but it's fine because this process runs once.
-ini_set('memory_limit', '1G');
+// depending on the language samples to process, you might want to increase the memory usage ;)
+//ini_set('memory_limit', '1G');
 mb_internal_encoding('UTF-8');
 
 $string = '';
@@ -21,19 +21,11 @@ $challenge = new Challenge\Challenge($entityManager);
 $language = $challenge->determineLanguage($string);
 $challenge->initWordDb();
 
+$output = 'Here is the rebus to solve: ';
+echo PHP_EOL . $output . PHP_EOL . str_repeat('-', strlen($output)) . PHP_EOL;
 
-// debug
-//$wordRepository = $entityManager->getRepository('Entities\Word');
-//$words = $wordRepository->findBy(['word' => '%est']);
-
-$repo = $entityManager->getRepository('Entities\Word');
-$query = $repo->createQueryBuilder('w')
-    ->where('w.word LIKE :word')
-    ->setParameter('word', '%est')
-    ->setMaxResults(10)
-    ->getQuery();
-$words = $query->execute();
-
+$words = explode(' ', $string);
 foreach ($words as $word) {
-    echo sprintf("-%s\n", $word->getWord());
+    $rebus = new Challenge\Rebus($word, $entityManager);
+    $rebus->dump();
 }
