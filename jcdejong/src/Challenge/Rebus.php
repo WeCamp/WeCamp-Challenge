@@ -41,9 +41,19 @@ class Rebus
 
         // if word is only 1 char long, no need to subtract anything from this word :)
         if (strlen($this->word) > 1) {
-            $lengthToFind = strlen($this->leftPart) + 1;
-            $this->leftPart = strtolower(substr($this->word, 0, $lengthToFind));
-            $partToFind = strtolower(substr($this->word, $lengthToFind, strlen($this->word)));
+
+            // take something of from the left or the right
+            $leftOrRight = rand(0,1);
+
+            if ($leftOrRight) {
+                $lengthToFind = strlen($this->leftPart) + 1;
+                $this->leftPart = strtolower(substr($this->word, 0, $lengthToFind));
+                $partToFind = strtolower(substr($this->word, $lengthToFind, strlen($this->word)));
+            } else {
+                $lengthToFind = strlen($this->rightPart) + 1;
+                $this->rightPart = strtolower(substr($this->word, strlen($this->word) - $lengthToFind, strlen($this->word)));
+                $partToFind = strtolower(substr($this->word, 0, strlen($this->word) - $lengthToFind));
+            }
         }
 
         try {
