@@ -28,7 +28,7 @@ echo PHP_EOL . $output . PHP_EOL . str_repeat('-', strlen($output)) . PHP_EOL;
 $words = explode(' ', $string);
 $output = [];
 foreach ($words as $word) {
-    $rebus = new Challenge\Rebus($word, $entityManager);
+    $rebus = new Challenge\Rebus($word, $language, $entityManager);
     ob_start();
     $rebus->dump();
     $output[] = explode(PHP_EOL, ob_get_clean());

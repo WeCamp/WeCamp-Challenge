@@ -60,7 +60,6 @@ Still under construction, but at this point it is already doing this:
 Known bugs/issues, still on todo list:
 
  - if a word cannot be found in the database, instructions are basically to remove everything and add the word..
- - all languages are currently inserted in one big pile into the database, rebus (db) should be made language aware
  - code is far from clean and maintainable, but I tend to use this codebase as input for some courses and maybe a talk
  - implement a image search api and make an actual rebus
  - fix all @todos in code and improve overall :)

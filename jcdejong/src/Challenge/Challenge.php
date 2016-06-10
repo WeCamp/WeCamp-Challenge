@@ -2,7 +2,7 @@
 
 namespace Challenge;
 
-use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\ORMException;
 use Entities\Word;
 use LanguageDetector;
 
@@ -64,7 +64,7 @@ class Challenge
     /**
      * Load words file into database
      * @todo implement finally
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function initWordDb()
     {
@@ -82,7 +82,7 @@ class Challenge
 
         try {
             $counter = 0;
-            echo 'Importing words into database...';
+            echo 'Importing ' . $language . ' words into database...';
             $file = fopen($languageFile, 'r');
             while (!feof($file)) {
                 $wordRead = trim(fgets($file));
@@ -92,9 +92,9 @@ class Challenge
 
                     // stop importing if the word is already in the database (quick'n dirty ftw)
                     if ($counter == 0) {
-                        $word = $this->em->getRepository('Entities\Word')->findOneBy(array('word' => $wordRead));
+                        $word = $this->em->getRepository('Entities\Word')->findOneBy(array('word' => $wordRead, 'language' => $language));
                         if ($word) {
-                            echo ' skipped, records are already in the database.' . PHP_EOL;
+                            echo ' skipped, ' . $language . ' records are already in the database.' . PHP_EOL;
                             return;
                         }
                     }
@@ -102,6 +102,7 @@ class Challenge
                     // save the word to database
                     $word = new Word();
                     $word->setWord($wordRead);
+                    $word->setLanguage($language);
                     $this->em->persist($word);
                     $counter++;
                 }
@@ -112,7 +113,7 @@ class Challenge
                 }
             }
             echo 'done' . PHP_EOL;
-        } catch (\Doctrine\ORM\ORMException $e) {
+        } catch (ORMException $e) {
             echo 'An error occurred while inserting words into database... (this may take a while, depending on the amount of words)' . PHP_EOL;
             echo $e->getMessage() . PHP_EOL;
             die();

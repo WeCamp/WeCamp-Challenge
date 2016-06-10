@@ -10,6 +10,8 @@ class Rebus
     private $em;
 
     private $word;
+    private $language;
+
     private $rebusWord;
     private $leftPart;
     private $rightPart;
@@ -18,11 +20,16 @@ class Rebus
 
     private $iteration = 0;
 
-    public function __construct($word, $entityManager)
+    public function __construct($word, $language, $entityManager)
     {
+        $this->em = $entityManager;
+
         // remove all unwanted characters
         $this->word = strtolower(preg_replace("/[^[:alnum:][:space:]]/u", '', $word));
-        $this->em = $entityManager;
+
+        // @todo: check if language is available/loaded?
+        $this->language = strtolower($language);
+
         $this->find();
         $this->getInstructions();
     }
@@ -63,14 +70,14 @@ class Rebus
                 ->where('w.word LIKE :word')
                 ->andWhere('LENGTH(w.word) > ' . strlen($partToFind))
                 ->andWhere('w.word <> :original')
+                ->andWhere('w.language = :language')
                 ->setParameter('word', '%' . $partToFind . '%')
                 ->setParameter('original', $this->word)
+                ->setParameter('language', $this->language)
                 ->orderBy('wordLength', 'ASC')
-                //->setMaxResults(1)
                 ->getQuery();
             $result = $query->getResult();
 
-            //$this->rebusWord = isset($result[0]['word']) ? $result[0]['word'] : false;
             $randomIndex = rand(0, count($result));
             $this->rebusWord = isset($result[$randomIndex]['word']) ? $result[$randomIndex]['word'] : false;
 
