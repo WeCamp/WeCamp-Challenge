@@ -87,7 +87,7 @@ class Challenge
             while (!feof($file)) {
                 $wordRead = trim(fgets($file));
 
-                // only alpha characters, minimum length of 3 and not the same character
+                // only alpha characters (incl. UTF-8 letters), minimum length of 3 and not the same character
                 if (preg_replace('/[^\w\p{L}\p{N}\p{Pd}]/u', '', $wordRead, -1) == $wordRead && mb_strlen($wordRead) >= 3 && mb_substr_count($wordRead, $wordRead{0}) != 3) {
 
                     // stop importing if the word is already in the database (quick'n dirty ftw)
