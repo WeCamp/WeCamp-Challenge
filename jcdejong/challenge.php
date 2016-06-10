@@ -22,7 +22,7 @@ $language = $challenge->determineLanguage($string);
 $challenge->initWordDb();
 
 $output = 'Here is the rebus to solve: ';
-echo PHP_EOL . $output . PHP_EOL . str_repeat('-', strlen($output)) . PHP_EOL;
+echo PHP_EOL . $output . PHP_EOL . str_repeat('-', mb_strlen($output)) . PHP_EOL;
 
 // @todo add images using a google/flickr search, prettify, test, etc ;)
 $words = explode(' ', $string);
@@ -35,7 +35,7 @@ foreach ($words as $word) {
 }
 
 //vertical dump rebus
-if (isset($argv[2]) && strpos($argv[2], 'vertical') !== false) {
+if (isset($argv[2]) && mb_strpos($argv[2], 'vertical') !== false) {
     foreach ($output as $rebus) {
         echo implode(PHP_EOL, $rebus);
         echo '----------------------------' . PHP_EOL;
@@ -46,9 +46,9 @@ if (isset($argv[2]) && strpos($argv[2], 'vertical') !== false) {
     echo '|';
     foreach ($output as $key => $word) {
         if (isset($word[0])) {
-            echo str_pad($word[0], strlen($word[0]) + 5, ' ', STR_PAD_BOTH) . '|';
+            echo str_pad($word[0], mb_strlen($word[0]) + 5, ' ', STR_PAD_BOTH) . '|';
 
-            $colSize[$key] = strlen($word[0]) + 5;
+            $colSize[$key] = mb_strlen($word[0]) + 5;
         }
     }
     echo PHP_EOL . '|';

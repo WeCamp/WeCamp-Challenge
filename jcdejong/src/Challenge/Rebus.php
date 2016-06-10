@@ -24,8 +24,9 @@ class Rebus
     {
         $this->em = $entityManager;
 
-        // remove all unwanted characters
-        $this->word = strtolower(preg_replace("/[^[:alnum:][:space:]]/u", '', $word));
+        // remove all unwanted characters, we use [À-ž], so we also include ä ö ü é ß î etc :)
+        $this->word = preg_replace('/[^\w\p{L}\p{N}\p{Pd}]/u', '', $word, -1);
+        $this->word = utf8_encode(strtolower(utf8_decode($this->word))); // not suitable for every occasion, but it works for now..
 
         // @todo: check if language is available/loaded?
         $this->language = strtolower($language);
@@ -47,19 +48,19 @@ class Rebus
         $partToFind = $this->word;
 
         // if word is only 1 char long, no need to subtract anything from this word :)
-        if (strlen($this->word) > 1) {
+        if (mb_strlen($this->word) > 1) {
 
             // take something of from the left or the right
             $leftOrRight = rand(0,1);
 
             if ($leftOrRight) {
-                $lengthToFind = strlen($this->leftPart) + 1;
-                $this->leftPart = strtolower(substr($this->word, 0, $lengthToFind));
-                $partToFind = strtolower(substr($this->word, $lengthToFind, strlen($this->word)));
+                $lengthToFind = mb_strlen($this->leftPart) + 1;
+                $this->leftPart = mb_substr($this->word, 0, $lengthToFind);
+                $partToFind = mb_substr($this->word, $lengthToFind, mb_strlen($this->word));
             } else {
-                $lengthToFind = strlen($this->rightPart) + 1;
-                $this->rightPart = strtolower(substr($this->word, strlen($this->word) - $lengthToFind, strlen($this->word)));
-                $partToFind = strtolower(substr($this->word, 0, strlen($this->word) - $lengthToFind));
+                $lengthToFind = mb_strlen($this->rightPart) + 1;
+                $this->rightPart = mb_substr($this->word, mb_strlen($this->word) - $lengthToFind, mb_strlen($this->word));
+                $partToFind = mb_substr($this->word, 0, mb_strlen($this->word) - $lengthToFind);
             }
         }
 
@@ -68,7 +69,7 @@ class Rebus
             $query = $repo->createQueryBuilder('w')
                 ->select('w.word, LENGTH(w.word) AS wordLength')
                 ->where('w.word LIKE :word')
-                ->andWhere('LENGTH(w.word) > ' . strlen($partToFind))
+                ->andWhere('LENGTH(w.word) > ' . mb_strlen($partToFind))
                 ->andWhere('w.word <> :original')
                 ->andWhere('w.language = :language')
                 ->setParameter('word', '%' . $partToFind . '%')
@@ -174,7 +175,7 @@ class Rebus
     {
         echo '[' . $this->rebusWord. ']' . PHP_EOL;
         foreach ($this->instructions as $instruction) {
-            echo str_pad($instruction, strlen($this->rebusWord) + 2, ' ', STR_PAD_BOTH). PHP_EOL;
+            echo str_pad($instruction, mb_strlen($this->rebusWord) + 2, ' ', STR_PAD_BOTH). PHP_EOL;
         }
     }
 }

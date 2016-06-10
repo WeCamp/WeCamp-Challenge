@@ -43,6 +43,9 @@ Tips for finding additional words
  - english animals - downloaded from <https://github.com/hzlzh/Domain-Name-List/blob/master/Animal-words.txt>
  - english nouns - download from <http://www.desiquintans.com/nounlist>
  - english words - downloaded from <https://github.com/dwyl/english-words.git>
+ - more words - find at <http://www.enchantedlearning.com/wordlist/transportation.shtml>
+ - tip use google translate to translate the lists into other languages ;)
+ - german text - found at <http://learnoutlive.com/german-short-stories-beginners/>
  
 Contact
 =======
@@ -52,7 +55,7 @@ Disclaimer
 ==========
 Still under construction, but at this point it is already doing this:
 
- - determine input language of input string
+ - determine input language of input string (dutch, english, german included as samples thusfar)
  - based on the input language create a simple database
  - for each word create a (text)rebus
  - ouput it to the console

@@ -88,7 +88,7 @@ class Challenge
                 $wordRead = trim(fgets($file));
 
                 // only alpha characters, minimum length of 3 and not the same character
-                if (ctype_alpha($wordRead) && strlen($wordRead) >= 3 && substr_count($wordRead, $wordRead{0}) != 3) {
+                if (ctype_alpha($wordRead) && mb_strlen($wordRead) >= 3 && mb_substr_count($wordRead, $wordRead{0}) != 3) {
 
                     // stop importing if the word is already in the database (quick'n dirty ftw)
                     if ($counter == 0) {
