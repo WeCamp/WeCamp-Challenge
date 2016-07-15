@@ -35,4 +35,4 @@ var outputString = arrayOfWords.map((word) => {
 });
 
 console.log(`We've randomly created "${outputString.join(' ')}" from "${inputString}"`);
-console.log(`This process took ${Math.floor(totalProcessTime/1000)} seconds and ${totalTries} number of random words`);
+console.log(`This process took ${Math.floor(totalProcessTime/1000)} seconds and ${totalTries} random words guesses.`);
