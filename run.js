@@ -20,7 +20,7 @@ var outputString = arrayOfWords.map((word) => {
   console.log(`Trying to recreate "${word}" using generateRandomWord()...`);
   while(wordNotFound) {
     var randomWord = wordLibrary.generateRandomWord(wordPattern);
-    if (randomWord == word) {
+    if (randomWord === word) {
       wordNotFound = false;
     }
     i++;
