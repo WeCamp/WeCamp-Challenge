@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-0": {
+            "Challenge": "src/"
+        },
+        "classmap": [ "src/" ]
+    },
+    "require": {
+        "crodas/LanguageDetector": "^0.1.1",
+        "doctrine/orm": "^2.5"
+    }
+}
