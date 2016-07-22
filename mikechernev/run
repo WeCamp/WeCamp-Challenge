@@ -1,0 +1,7 @@
+#!/bin/bash
+
+rm -rf ./output/output.*
+
+docker run -it --rm -v $(pwd):/app -w /app python:2.7 python scripts/convert.py
+docker run -it --rm -v $(pwd)/output:/work -w /work mikechernev/lilypond lilypond output.ly
+docker run -it --rm -v $(pwd)/output:/work -w /work mikechernev/midi2mp3 convert output.midi
